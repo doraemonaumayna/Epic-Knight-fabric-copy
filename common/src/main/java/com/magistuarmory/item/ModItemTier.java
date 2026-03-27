@@ -67,7 +67,7 @@ public class ModItemTier
 
 	public Ingredient getRepairIngredient()
 	{
-		return Ingredient.of(toolMaterial.repairItems());
+		return Ingredient.fromTag(toolMaterial.repairItems());
 	}
 
 	public float getSpeed()
