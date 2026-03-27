@@ -49,13 +49,12 @@ public class ArmorDecorationLayer<T extends LivingEntity> implements ArmorPatter
    private final String coatDirPrefix;
    private final ResourceLocation coatTexture;
    private final ResourceLocation basePatternTexture;
-   private final ArmorDecorationModelSet<T> decorationModels;
+   private final ArmorDecorationModelSet decorationModels;
 
-   public ArmorDecorationLayer(ArmorDecorationModelSet<T> decorationModels, RenderLayerParent<T, HumanoidRenderState> parent, EntityRendererProvider.Context context, ResourceLocation location)
+   public ArmorDecorationLayer(ArmorDecorationModelSet decorationModels, EntityRendererProvider.Context context, ResourceLocation location)
    {
-      super(parent);
       this.decorationModels = decorationModels;
-      this.coatModel = new SurcoatModel<>(context.bakeLayer(ModModels.createDecorationLocation(location)));
+      this.coatModel = new SurcoatModel(context.bakeLayer(new ModelLayerLocation(location, "decoration")));
       this.coatDirPrefix = this.getDirPrefix(location);
       this.coatTexture = this.getTexture(location);
       this.basePatternTexture = ResourceLocation.fromNamespaceAndPath(EpicKnights.ID, coatDirPrefix + "base.png");
@@ -76,7 +75,6 @@ public class ArmorDecorationLayer<T extends LivingEntity> implements ArmorPatter
       return ARMOR_DIR_PREFIX + location.getPath() + "/";
    }
 
-   @Override
    public void render(PoseStack pose, MultiBufferSource buffer, int p, HumanoidRenderState state, float f, float f2, float f3, float f4, float f5, float f6)
    {
       // Rendering disabled for 1.21.4 compatibility
@@ -93,7 +91,7 @@ public class ArmorDecorationLayer<T extends LivingEntity> implements ArmorPatter
             for (ArmorDecorationItem.DecorationInfo info : createDecorations(getDecorationTags(stack)))
             {
                ResourceLocation location = info.location();
-               ArmorDecorationModel<T> model = this.getArmorDecorationModel(location);
+               ArmorDecorationModel model = this.getArmorDecorationModel(location);
                if (model != null)
                {
                   this.getParentModel().copyPropertiesTo(model);
@@ -125,7 +123,7 @@ public class ArmorDecorationLayer<T extends LivingEntity> implements ArmorPatter
       return this.coatModel;
    }
 
-   public ArmorDecorationModel<T> getArmorDecorationModel(ResourceLocation location)
+   public ArmorDecorationModel getArmorDecorationModel(ResourceLocation location)
    {
       return this.decorationModels.get(location);
    }
