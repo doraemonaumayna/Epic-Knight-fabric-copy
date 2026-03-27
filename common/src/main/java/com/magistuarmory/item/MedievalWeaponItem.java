@@ -299,7 +299,7 @@ public class MedievalWeaponItem extends SwordItem implements IHasModelProperty
 	{
 		if (this.canBlock())
 		{
-			ItemPropertiesRegistry.register(this, ResourceLocation.withDefaultNamespace("blocking"), (stack, level, entity, i) ->
+			ItemPropertiesRegistry.register(this, ResourceLocation.withDefaultNamespace("blocking"), (stack, level, entity, seed) ->
 					entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
 		}
 	}

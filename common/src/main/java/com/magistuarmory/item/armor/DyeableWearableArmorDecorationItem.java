@@ -22,9 +22,12 @@ import java.util.List;
 
 public class DyeableWearableArmorDecorationItem extends DyeableMedievalArmorItem implements ArmorDecoration
 {
+	private final net.minecraft.world.item.equipment.ArmorType armorType;
+
 	public DyeableWearableArmorDecorationItem(com.magistuarmory.item.armor.ArmorType material, net.minecraft.world.item.equipment.ArmorType type, Properties properties, int defaultcolor)
 	{
 		super(material, type, properties, defaultcolor);
+		this.armorType = type;
 	}
 
 	@Override
@@ -48,7 +51,7 @@ public class DyeableWearableArmorDecorationItem extends DyeableMedievalArmorItem
 	@Override
 	public @NotNull net.minecraft.world.item.equipment.ArmorType getType()
 	{
-		return this.type;
+		return this.armorType;
 	}
 
 	@Override
@@ -56,8 +59,7 @@ public class DyeableWearableArmorDecorationItem extends DyeableMedievalArmorItem
 	{
 		return stack.getItem() != this &&
 				ArmorDecorationItem.getDecorationTags(stack).size() < 8 &&
-				stack.getItem() instanceof ArmorItem armor &&
-				this.getType() == armor.getType();
+				stack.getItem() instanceof ArmorItem;
 	}
 
 	@Override

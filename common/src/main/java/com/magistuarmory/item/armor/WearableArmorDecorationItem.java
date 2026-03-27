@@ -16,9 +16,12 @@ import org.jetbrains.annotations.NotNull;
 
 public class WearableArmorDecorationItem extends MedievalArmorItem implements ArmorDecoration
 {
+	private final net.minecraft.world.item.equipment.ArmorType armorType;
+
 	public WearableArmorDecorationItem(com.magistuarmory.item.armor.ArmorType material, net.minecraft.world.item.equipment.ArmorType type, Properties properties)
 	{
 		super(material, type, properties);
+		this.armorType = type;
 	}
 
 	@Override
@@ -42,7 +45,7 @@ public class WearableArmorDecorationItem extends MedievalArmorItem implements Ar
 	@Override
 	public @NotNull net.minecraft.world.item.equipment.ArmorType getType()
 	{
-		return this.type;
+		return this.armorType;
 	}
 
 	@Override
@@ -50,8 +53,7 @@ public class WearableArmorDecorationItem extends MedievalArmorItem implements Ar
 	{
 		return stack.getItem() != this &&
 				ArmorDecorationItem.getDecorationTags(stack).size() < 8 &&
-				stack.getItem() instanceof ArmorItem armor &&
-				this.getType() == armor.getType();
+				stack.getItem() instanceof ArmorItem;
 	}
 
 	@Override

@@ -111,7 +111,7 @@ public class PaviseItem extends MedievalShieldItem
 		if (player == null || !player.getAbilities().instabuild)
 			stack.shrink(1);
 
-		return InteractionResult.sidedSuccess(level.isClientSide);
+		return InteractionResult.SUCCESS;
 	}
 
 	protected SoundEvent getPlaceSound(BlockState blockstate)

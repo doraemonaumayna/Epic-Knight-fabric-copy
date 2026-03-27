@@ -41,7 +41,7 @@ import static com.magistuarmory.item.ArmorDecorationItem.getDecorationTags;
 
 
 @Environment(EnvType.CLIENT)
-public class ArmorDecorationLayer<T extends LivingEntity, M extends HumanoidModel<T>> extends RenderLayer<T, M> implements ArmorPatternLayer
+public class ArmorDecorationLayer<T extends LivingEntity> implements ArmorPatternLayer
 {
 
    private static final String ARMOR_DIR_PREFIX = "textures/models/armor/";
@@ -51,7 +51,7 @@ public class ArmorDecorationLayer<T extends LivingEntity, M extends HumanoidMode
    private final ResourceLocation basePatternTexture;
    private final ArmorDecorationModelSet<T> decorationModels;
 
-   public ArmorDecorationLayer(ArmorDecorationModelSet<T> decorationModels, RenderLayerParent<T, M> parent, EntityRendererProvider.Context context, ResourceLocation location)
+   public ArmorDecorationLayer(ArmorDecorationModelSet<T> decorationModels, RenderLayerParent<T, HumanoidRenderState> parent, EntityRendererProvider.Context context, ResourceLocation location)
    {
       super(parent);
       this.decorationModels = decorationModels;
@@ -77,18 +77,16 @@ public class ArmorDecorationLayer<T extends LivingEntity, M extends HumanoidMode
    }
 
    @Override
-   public void render(PoseStack pose, MultiBufferSource buffer, int p, T entity, float f, float f2, float f3, float f4, float f5, float f6)
+   public void render(PoseStack pose, MultiBufferSource buffer, int p, HumanoidRenderState state, float f, float f2, float f3, float f4, float f5, float f6)
    {
-      this.renderPiece(pose, buffer, entity, EquipmentSlot.CHEST, p);
-      this.renderPiece(pose, buffer, entity, EquipmentSlot.LEGS, p);
-      this.renderPiece(pose, buffer, entity, EquipmentSlot.FEET, p);
-      this.renderPiece(pose, buffer, entity, EquipmentSlot.HEAD, p);
+      // Rendering disabled for 1.21.4 compatibility
+      throw new UnsupportedOperationException("Armor decoration rendering not yet updated for 1.21.4");
    }
 
    private void renderPiece(PoseStack pose, MultiBufferSource buffer, T entity, EquipmentSlot slot, int p)
    {
       ItemStack stack = entity.getItemBySlot(slot);
-      if (stack.getItem() instanceof ArmorItem armoritem && armoritem.getEquipmentSlot() == slot)
+      if (stack.getItem() instanceof ArmorItem armoritem)
       {
          if (stack.get(ModDataComponents.ARMOR_DECORATION.get()) != null)
          {
@@ -112,7 +110,7 @@ public class ArmorDecorationLayer<T extends LivingEntity, M extends HumanoidMode
             }
          }
          BannerPatternLayers patterns = stack.get(DataComponents.BANNER_PATTERNS);
-         if (armoritem.getEquipmentSlot() == EquipmentSlot.CHEST && patterns != null)
+         if (slot == EquipmentSlot.CHEST && patterns != null)
          {
             DyeColor basecolor = stack.get(DataComponents.BASE_COLOR);
             this.getParentModel().copyPropertiesTo(this.coatModel);

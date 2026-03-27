@@ -13,6 +13,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -88,8 +89,7 @@ public class ArmorDecorationItem extends Item implements ArmorDecoration
 	public boolean isApplicableForDecoration(ItemStack stack)
 	{
 		return getDecorationTags(stack).size() < 8 &&
-				stack.getItem() instanceof ArmorItem armor &&
-				this.getType() == armor.getType();
+				stack.getItem() instanceof ArmorItem;
 	}
 
 	public static ListTag getDecorationTags(ItemStack stack)
@@ -109,6 +109,6 @@ public class ArmorDecorationItem extends Item implements ArmorDecoration
 	@Environment(EnvType.CLIENT)
 	public ModelLayerLocation createModelLocation()
 	{
-		return ModModels.createDecorationLocation(this.location);
+		return new ModelLayerLocation(this.location, "decoration");
 	}
 }
