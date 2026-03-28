@@ -5,7 +5,7 @@ import com.magistuarmory.effects.LacerationEffect;
 import com.magistuarmory.component.ModDataComponents;
 import com.magistuarmory.util.CombatHelper;
 import com.magistuarmory.util.ModDamageSources;
-import dev.architectury.registry.item.ItemPropertiesRegistry;
+// Removed ItemProperties import
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.ChatFormatting;
@@ -293,14 +293,5 @@ public class MedievalWeaponItem extends SwordItem implements IHasModelProperty
 		return true;
 	}
 
-	@Override
-	@Environment(EnvType.CLIENT)
-	public void registerModelProperty()
-	{
-		if (this.canBlock())
-		{
-			ItemPropertiesRegistry.register(this, ResourceLocation.withDefaultNamespace("blocking"), (stack, level, entity, seed) ->
-					entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
-		}
-	}
+// Removed registerModelProperty, will register in client mod
 }

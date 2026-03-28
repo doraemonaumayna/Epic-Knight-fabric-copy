@@ -67,7 +67,9 @@ public class ModItemTier
 
 	public Ingredient getRepairIngredient()
 	{
-		return Ingredient.fromTag(toolMaterial.repairItems());
+		// Fabric: Use Ingredient.of(TagKey<Item>) instead of fromTag
+		TagKey<Item> repairTag = toolMaterial.repairItems();
+		return Ingredient.of(repairTag);
 	}
 
 	public float getSpeed()

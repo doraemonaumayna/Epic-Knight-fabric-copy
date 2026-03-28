@@ -15,10 +15,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.AbstractBannerBlock;
 import net.minecraft.world.level.block.BannerBlock;
 import net.minecraft.world.level.block.Block;
@@ -97,7 +97,7 @@ public class PaviseBlock extends AbstractBannerBlock
 	}
 	
 	@Override
-	public @NotNull ItemStack getCloneItemStack(LevelReader reader, BlockPos blockpos, BlockState blockstate) 
+	public @NotNull ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader reader, BlockPos blockpos, Player player) 
 	{
 		if (reader.getBlockEntity(blockpos) instanceof PaviseBlockEntity pavise)
 			return pavise.getStack();
@@ -106,7 +106,7 @@ public class PaviseBlock extends AbstractBannerBlock
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState blockstate, BlockGetter blockgetter, BlockPos blockpos, CollisionContext context)
+	public VoxelShape getShape(BlockState blockstate, net.minecraft.world.level.BlockGetter blockgetter, BlockPos blockpos, CollisionContext context)
 	{
 		AABB aabb = COLLISION_AABB;
 		
@@ -147,7 +147,7 @@ public class PaviseBlock extends AbstractBannerBlock
 	}
 
 	@Override
-	public void destroy(LevelAccessor accessor, BlockPos blockpos, BlockState blockstate)
+	protected void destroy(LevelAccessor accessor, BlockPos blockpos, BlockState blockstate)
 	{
 		if (accessor.getBlockState(blockpos.above()).getBlock() == ModBlocks.PAVISE_UPPER_COLLISION.get())
 			accessor.destroyBlock(blockpos.above(), false);

@@ -6,8 +6,7 @@ import com.magistuarmory.item.ModItems;
 import dev.architectury.platform.Platform;
 import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
-import dev.architectury.registry.registries.DeferredSupplier;
-import dev.architectury.registry.registries.RegistrySupplier;
+// Removed Architectury DeferredSupplier and RegistrySupplier imports
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -30,13 +29,12 @@ public class ModCreativeTabs
 
 	static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(EpicKnights.ID, Registries.CREATIVE_MODE_TAB);
 
-	static final RegistrySupplier<CreativeModeTab> ARMOR = Platform.isFabric() ? TABS.register("armor", () -> CreativeTabRegistry.create(
-		Component.translatable("itemGroup." + EpicKnights.ID + ".armor"), ARMET_WITH_PLUME_SUPPLIER)) : createTab("armor", ModItems.ARMET);
-	static final RegistrySupplier<CreativeModeTab> WEAPONS = createTab("weapons", ModItems.FLAME_BLADED_SWORDS.iron);
-	static final RegistrySupplier<CreativeModeTab> PARTICULAR_WEAPONS = createTab("particular_weapons", ModItems.NOBLE_SWORD);
-	static final RegistrySupplier<CreativeModeTab> SHIELDS = createTab("shields", ModItems.HEATER_SHIELDS.iron);
-	static final RegistrySupplier<CreativeModeTab> RUSTED = createTab("rusted", ModItems.RUSTED_BASTARD_SWORD);
-	static final RegistrySupplier<CreativeModeTab> ARMOR_DECORATIONS = createTab("armor_decorations", ModItems.CROWN_DECORATION);
+	public static final ResourceKey<CreativeModeTab> ARMOR = ResourceKey.create(Registries.CREATIVE_MODE_TAB, ResourceLocation.fromNamespaceAndPath(EpicKnights.ID, "armor"));
+	public static final ResourceKey<CreativeModeTab> WEAPONS = ResourceKey.create(Registries.CREATIVE_MODE_TAB, ResourceLocation.fromNamespaceAndPath(EpicKnights.ID, "weapons"));
+	public static final ResourceKey<CreativeModeTab> PARTICULAR_WEAPONS = ResourceKey.create(Registries.CREATIVE_MODE_TAB, ResourceLocation.fromNamespaceAndPath(EpicKnights.ID, "particular_weapons"));
+	public static final ResourceKey<CreativeModeTab> SHIELDS = ResourceKey.create(Registries.CREATIVE_MODE_TAB, ResourceLocation.fromNamespaceAndPath(EpicKnights.ID, "shields"));
+	public static final ResourceKey<CreativeModeTab> RUSTED = ResourceKey.create(Registries.CREATIVE_MODE_TAB, ResourceLocation.fromNamespaceAndPath(EpicKnights.ID, "rusted"));
+	public static final ResourceKey<CreativeModeTab> ARMOR_DECORATIONS = ResourceKey.create(Registries.CREATIVE_MODE_TAB, ResourceLocation.fromNamespaceAndPath(EpicKnights.ID, "armor_decorations"));
 
 	public static final ResourceKey<CreativeModeTab> ARMOR_RESOURCE_KEY = ResourceKey.create(Registries.CREATIVE_MODE_TAB, ResourceLocation.fromNamespaceAndPath(EpicKnights.ID, "armor"));
 	public static final ResourceKey<CreativeModeTab> WEAPONS_RESOURCE_KEY = ResourceKey.create(Registries.CREATIVE_MODE_TAB, ResourceLocation.fromNamespaceAndPath(EpicKnights.ID, "weapons"));
@@ -46,19 +44,9 @@ public class ModCreativeTabs
 	public static final ResourceKey<CreativeModeTab> ARMOR_DECORATIONS_RESOURCE_KEY = ResourceKey.create(Registries.CREATIVE_MODE_TAB, ResourceLocation.fromNamespaceAndPath(EpicKnights.ID, "armor_decorations"));
 	public static final ResourceKey<CreativeModeTab> INGRIDIENTS_RESOURCE_KEY = CreativeModeTabs.INGREDIENTS;
 
-	public static RegistrySupplier<CreativeModeTab> createTab(String name, @Nullable RegistrySupplier<? extends Item> supplier)
-	{
-		return TABS.register(name, () -> CreativeTabRegistry.create(
-				Component.translatable("itemGroup." + EpicKnights.ID + "." + name),
-				() -> supplier == null ? ItemStack.EMPTY : new ItemStack(getIconItem(supplier))));
-	}
+	// Removed createTab, tabs are now referenced by ResourceKey only
 
-	public static Item getIconItem(RegistrySupplier<? extends Item> supplier)
-	{
-		if (supplier != null && supplier.get() != null)
-			return supplier.get();
-		return Items.BARRIER;
-	}
+	// Removed getIconItem, not needed with ResourceKey
 
 	public static void init()
 	{
@@ -224,15 +212,7 @@ public class ModCreativeTabs
 		}
 	}
 
-	@SafeVarargs
-	public static <I extends ItemStack, T extends Supplier<I>> void appendStack(DeferredSupplier<CreativeModeTab> tab, T... stacks)
-	{
-		Arrays.stream(stacks).filter(Objects::nonNull).forEach((stack) -> {
-			if (!stack.get().isEmpty()) {
-				CreativeTabRegistry.appendStack(tab, stack.get());
-			}
-		});
-	}
+	// Removed appendStack for DeferredSupplier, not needed
 
 	@SafeVarargs
 	public static <I extends ItemLike, T extends Supplier<I>> void append(ResourceKey<CreativeModeTab> tab, T... items)
@@ -240,9 +220,5 @@ public class ModCreativeTabs
 		Arrays.stream(items).filter(Objects::nonNull).forEach((item) -> CreativeTabRegistry.append(tab, item));
 	}
 	
-	@SafeVarargs
-	public static <I extends ItemLike, T extends Supplier<I>> void append(DeferredSupplier<CreativeModeTab> tab, T... items)
-	{
-		Arrays.stream(items).filter(Objects::nonNull).forEach((item) -> CreativeTabRegistry.append(tab, item));
-	}
+	// Removed append for DeferredSupplier, not needed
 }
