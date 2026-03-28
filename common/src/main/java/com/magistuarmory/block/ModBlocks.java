@@ -14,26 +14,10 @@ import java.util.function.Supplier;
 
 public class ModBlocks
 {
-	private static Block register(String name, Block block)
-	{
-		return block;
-	}
-	
-	public static void init()
-	{
-		Registry.register(net.minecraft.core.registries.BuiltinRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(EpicKnights.ID, "wood_pavise"), WOOD_PAVISE);
-		Registry.register(net.minecraft.core.registries.BuiltinRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(EpicKnights.ID, "gold_pavise"), GOLD_PAVISE);
-		Registry.register(net.minecraft.core.registries.BuiltinRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(EpicKnights.ID, "stone_pavise"), STONE_PAVISE);
-		Registry.register(net.minecraft.core.registries.BuiltinRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(EpicKnights.ID, "iron_pavise"), IRON_PAVISE);
-		Registry.register(net.minecraft.core.registries.BuiltinRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(EpicKnights.ID, "diamond_pavise"), DIAMOND_PAVISE);
-		Registry.register(net.minecraft.core.registries.BuiltinRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(EpicKnights.ID, "netherite_pavise"), NETHERITE_PAVISE);
-		Registry.register(net.minecraft.core.registries.BuiltinRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(EpicKnights.ID, "tin_pavise"), TIN_PAVISE);
-		Registry.register(net.minecraft.core.registries.BuiltinRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(EpicKnights.ID, "copper_pavise"), COPPER_PAVISE);
-		Registry.register(net.minecraft.core.registries.BuiltinRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(EpicKnights.ID, "silver_pavise"), SILVER_PAVISE);
-		Registry.register(net.minecraft.core.registries.BuiltinRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(EpicKnights.ID, "bronze_pavise"), BRONZE_PAVISE);
-		Registry.register(net.minecraft.core.registries.BuiltinRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(EpicKnights.ID, "steel_pavise"), STEEL_PAVISE);
-		Registry.register(net.minecraft.core.registries.BuiltinRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(EpicKnights.ID, "pavise_upper_collision"), PAVISE_UPPER_COLLISION);
-	}
+
+		private static Block registerBlock(String name, Block block) {
+			return Registry.register(net.minecraft.core.registries.BuiltinRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(EpicKnights.ID, name), block);
+		}
 
 	public static final Block WOOD_PAVISE = register("wood_pavise", new PaviseBlock(DyeColor.WHITE, BlockBehaviour.Properties.of().dynamicShape().noTerrainParticles().sound(SoundType.WOOD).ignitedByLava(), "wood_pavise", ModBlockEntityTypes.WOOD_PAVISE));
 	public static final Block GOLD_PAVISE = register("gold_pavise", new PaviseBlock(DyeColor.WHITE, BlockBehaviour.Properties.of().dynamicShape().noTerrainParticles().sound(SoundType.WOOD).ignitedByLava(), "gold_pavise", ModBlockEntityTypes.GOLD_PAVISE));

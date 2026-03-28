@@ -24,7 +24,7 @@ public class MedievalArmorItem extends ArmorItem implements ISurcoat
 
 	public MedievalArmorItem(com.magistuarmory.item.armor.ArmorType armortype, net.minecraft.world.item.equipment.ArmorType type, Properties properties)
 	{
-		super(armortype.getMaterial().value(), type, properties.durability(armortype.getDurabilityForType(type)).stacksTo(1));
+		super(armortype.toVanillaArmorMaterial(), type, properties.durability(armortype.getDurabilityForType(type)).stacksTo(1));
 		this.armortype = armortype;
 		this.type = type;
 	}
@@ -39,14 +39,7 @@ public class MedievalArmorItem extends ArmorItem implements ISurcoat
 		return this.type;
 	}
 
-	/**
-	 * Get the equipment slot this armor item occupies
-	 */
-	@Override
-	public EquipmentSlot getEquipmentSlot()
-	{
-		return super.getEquipmentSlot();
-	}
+	// ...existing code...
 
 	@Deprecated(forRemoval = true)
 	@Environment(EnvType.CLIENT)
