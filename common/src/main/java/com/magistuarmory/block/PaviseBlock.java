@@ -97,7 +97,7 @@ public class PaviseBlock extends AbstractBannerBlock
 	}
 	
 	@Override
-	public @NotNull ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader reader, BlockPos blockpos, Player player) 
+	public @NotNull ItemStack getCloneItemStack(LevelReader reader, BlockPos blockpos, BlockState state, boolean flag)
 	{
 		if (reader.getBlockEntity(blockpos) instanceof PaviseBlockEntity pavise)
 			return pavise.getStack();

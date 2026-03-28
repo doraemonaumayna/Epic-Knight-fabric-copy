@@ -6,6 +6,7 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import com.magistuarmory.util.ModDamageTypes;
 
@@ -18,8 +19,7 @@ public class ModDamageSources
 	public static void setup(RegistryAccess registryAccess)
 	{
 		DAMAGE_TYPES = registryAccess.lookup(Registries.DAMAGE_TYPE).orElseThrow();
-		DamageType additionalType = DAMAGE_TYPES.getOrThrow(ModDamageTypes.ADDITIONAL);
-		Holder<DamageType> additionalHolder = Holder.direct(additionalType);
+		Holder<DamageType> additionalHolder = DAMAGE_TYPES.getOrThrow(ModDamageTypes.ADDITIONAL);
 		ADDITIONAL = new DamageSource(additionalHolder);
 	}
 	
