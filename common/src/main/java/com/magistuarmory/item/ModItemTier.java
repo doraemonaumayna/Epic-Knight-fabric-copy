@@ -68,9 +68,9 @@ public class ModItemTier
 
 	public Ingredient getRepairIngredient()
 	{
-		// Fabric: Use Ingredient.of(TagKey<Item>) instead of fromTag
+		// Fabric 1.21: Ingredient.of(TagKey<Item>) may not exist; use built-in registry tag holder instead
 		TagKey<Item> repairTag = toolMaterial.repairItems();
-		return Ingredient.of(repairTag);
+		return Ingredient.of(net.minecraft.core.registries.BuiltInRegistries.ITEM.getTagOrEmpty(repairTag));
 	}
 
 	public float getSpeed()

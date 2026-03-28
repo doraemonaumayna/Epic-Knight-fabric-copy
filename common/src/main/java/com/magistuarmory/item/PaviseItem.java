@@ -151,7 +151,7 @@ public class PaviseItem extends MedievalShieldItem
 			return false;
 		if (!context.getLevel().setBlock(context.getClickedPos(), blockstate, 11))
 			return false;
-		level.setBlock(aboveblockpos, ModBlocks.PAVISE_UPPER_COLLISION.get().defaultBlockState(), 27);
+		level.setBlock(aboveblockpos, ModBlocks.PAVISE_UPPER_COLLISION.defaultBlockState(), 27);
 		return true;
 	}
 

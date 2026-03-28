@@ -33,6 +33,10 @@ public class ModBlocks
 	
 	public static final Block PAVISE_UPPER_COLLISION = register("pavise_upper_collision", new PaviseUpperCollisionBlock());
 	
+	public static void init() {
+		// Trigger class loading for static block registration
+	}
+
 	public static PaviseBlock getPaviseByMaterialName(ModItemTier material)
 	{
 		switch (material.getMaterialName())
