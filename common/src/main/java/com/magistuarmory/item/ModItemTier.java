@@ -1,7 +1,10 @@
 package com.magistuarmory.item;
 
 import dev.architectury.platform.Platform;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
 import net.minecraft.world.item.Item;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -11,6 +14,8 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 /**
@@ -66,11 +71,18 @@ public class ModItemTier
 		return toolMaterial.enchantmentValue();
 	}
 
+	private Ingredient getRepairIngredientFromTag(TagKey<Item> repairTag)
+	{
+		Iterable<Holder<Item>> holders = BuiltInRegistries.ITEM.getTagOrEmpty(repairTag);
+		List<Holder<Item>> holderList = new ArrayList<>();
+		holders.forEach(holderList::add);
+		return Ingredient.of(HolderSet.direct(holderList));
+	}
+
 	public Ingredient getRepairIngredient()
 	{
-		// Fabric 1.21: Ingredient.of(TagKey<Item>) may not exist; use built-in registry tag holder instead
 		TagKey<Item> repairTag = toolMaterial.repairItems();
-		return Ingredient.of(net.minecraft.core.registries.BuiltInRegistries.ITEM.getTagOrEmpty(repairTag));
+		return getRepairIngredientFromTag(repairTag);
 	}
 
 	public float getSpeed()
