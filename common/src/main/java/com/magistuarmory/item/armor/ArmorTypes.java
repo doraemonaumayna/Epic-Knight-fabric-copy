@@ -3,14 +3,19 @@ package com.magistuarmory.item.armor;
 import com.magistuarmory.EpicKnights;
 import com.magistuarmory.config.ArmorConfig;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.crafting.Ingredient;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 public class ArmorTypes
@@ -100,14 +105,21 @@ public class ArmorTypes
 		LAMELLAR = null;
 	}
 
+private static Ingredient ingredientFromTag(TagKey<Item> tag)
+	{
+		Iterable<Holder<Item>> holders = BuiltInRegistries.ITEM.getTagOrEmpty(tag);
+		List<Holder<Item>> holderList = new ArrayList<>();
+		holders.forEach(holderList::add);
+		return Ingredient.of(HolderSet.direct(holderList));
+	}
+
 	private static ArmorType create(ResourceLocation location,
-								   ResourceLocation modelLocation,
-								   ArmorConfig.ArmorTypeConfig config,
-								   Holder<SoundEvent> equipSound,
-								   boolean dyeable,
-								   String repairItemTag) {
-		// Fabric: Use Ingredient.of(TagKey<Item>) instead of fromTag
-		return new ArmorType(location, modelLocation, config.toughness, config.knockbackResistance, new Integer[] {config.bootsDurability, config.leggingsDurability, config.chestplateDurability, config.helmetDurability}, new Integer[] {config.bootsDefense, config.leggingsDefense, config.chestplateDefense, config.helmetDefense}, config.enchantmentValue, equipSound, dyeable, config.enabled, () -> Ingredient.of(TagKey.create(net.minecraft.core.registries.Registries.ITEM, ResourceLocation.parse(repairItemTag))));
+					   ResourceLocation modelLocation,
+					   ArmorConfig.ArmorTypeConfig config,
+					   Holder<SoundEvent> equipSound,
+					   boolean dyeable,
+					   String repairItemTag) {
+		return new ArmorType(location, modelLocation, config.toughness, config.knockbackResistance, new Integer[] {config.bootsDurability, config.leggingsDurability, config.chestplateDurability, config.helmetDurability}, new Integer[] {config.bootsDefense, config.leggingsDefense, config.chestplateDefense, config.helmetDefense}, config.enchantmentValue, equipSound, dyeable, config.enabled, () -> ingredientFromTag(TagKey.create(Registries.ITEM, ResourceLocation.parse(repairItemTag))));
 	}
 
 	private static ArmorType create(ResourceLocation location,

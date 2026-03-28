@@ -97,7 +97,7 @@ public class PaviseBlock extends AbstractBannerBlock
 	}
 	
 	@Override
-	public @NotNull ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader reader, BlockPos blockpos, Player player) 
+	public @NotNull ItemStack getCloneItemStack(LevelReader reader, BlockPos blockpos, BlockState state, boolean flag)
 	{
 		if (reader.getBlockEntity(blockpos) instanceof PaviseBlockEntity pavise)
 			return pavise.getStack();
@@ -147,9 +147,9 @@ public class PaviseBlock extends AbstractBannerBlock
 	}
 
 	@Override
-	protected void destroy(LevelAccessor accessor, BlockPos blockpos, BlockState blockstate)
+	public void destroy(LevelAccessor accessor, BlockPos blockpos, BlockState blockstate)
 	{
-		if (accessor.getBlockState(blockpos.above()).getBlock() == ModBlocks.PAVISE_UPPER_COLLISION.get())
+		if (accessor.getBlockState(blockpos.above()).getBlock() == ModBlocks.PAVISE_UPPER_COLLISION)
 			accessor.destroyBlock(blockpos.above(), false);
 		super.destroy(accessor, blockpos, blockstate);
 	}

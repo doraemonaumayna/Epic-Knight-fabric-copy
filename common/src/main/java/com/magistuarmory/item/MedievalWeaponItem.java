@@ -36,262 +36,265 @@ import java.util.List;
 
 public class MedievalWeaponItem extends SwordItem implements IHasModelProperty
 {
-	public static final ResourceLocation BASE_ENTITY_INTERACTION_RANGE_ID = ResourceLocation.fromNamespaceAndPath(EpicKnights.ID, "base_entity_interaction_range_id");
+        public static final ResourceLocation BASE_ENTITY_INTERACTION_RANGE_ID = ResourceLocation.fromNamespaceAndPath(EpicKnights.ID, "base_entity_interaction_range_id");
 
-	private final ItemAttributeModifiers defaultModifiers;
-	private final ItemAttributeModifiers decreasedModifiers;
+        private final ItemAttributeModifiers defaultModifiers;
+        private final ItemAttributeModifiers decreasedModifiers;
 
-	public final WeaponType type;
-	protected final float attackDamage;
-	private boolean isSilver = false;
-	private float silverAttackDamage = 0.0f;
-	private boolean blockingPriority = false;
+        public final WeaponType type;
+        protected final float attackDamage;
+        private boolean isSilver = false;
+        private float silverAttackDamage = 0.0f;
+        private boolean blockingPriority = false;
 
-	public MedievalWeaponItem(Properties properties, ModItemTier material, WeaponType type)
-	{
-		// SwordItem in 1.21.4 takes: ToolMaterial material, float attackDamage, float attackSpeed, Properties
-		super(material.getToolMaterial(), CombatHelper.getBaseAttackDamage(material, type), CombatHelper.getBaseAttackSpeed(material, type), properties.stacksTo(1).durability(type.getDurability(material)).attributes(createDefaultAttributeModifiersBuilder(material, type).build()));
-		this.type = type;
-		this.attackDamage = CombatHelper.getBaseAttackDamage(material, type);
+        public MedievalWeaponItem(Properties properties, ModItemTier material, WeaponType type)
+        {
+                // SwordItem in 1.21.4 takes: ToolMaterial material, float attackDamage, float attackSpeed, Properties
+                super(material.getToolMaterial(), CombatHelper.getBaseAttackDamage(material, type), CombatHelper.getBaseAttackSpeed(material, type), properties.stacksTo(1).durability(type.getDurability(material)).attributes(createDefaultAttributeModifiersBuilder(material, type).build()));
+                this.type = type;
+                this.attackDamage = CombatHelper.getBaseAttackDamage(material, type);
 
-		if (material.equals(ModItemTier.SILVER))
-		{
-			this.isSilver = true;
-			this.silverAttackDamage = CombatHelper.getSilverAttackDamage(material, type);
-		}
+                if (material.equals(ModItemTier.SILVER))
+                {
+                        this.isSilver = true;
+                        this.silverAttackDamage = CombatHelper.getSilverAttackDamage(material, type);
+                }
 
-		this.defaultModifiers = createDefaultAttributeModifiersBuilder(material, type).build();
-		this.decreasedModifiers = createDecreasedAttributeModifiersBuilder(material, type).build();
-	}
+                this.defaultModifiers = createDefaultAttributeModifiersBuilder(material, type).build();
+                this.decreasedModifiers = createDecreasedAttributeModifiersBuilder(material, type).build();
+        }
 
-	public static ItemAttributeModifiers.Builder createDefaultAttributeModifiersBuilder(ModItemTier material, WeaponType type) {
-		return createAttributeModifiersBuilder(CombatHelper.getBaseAttackDamage(material, type), CombatHelper.getBaseAttackSpeed(material, type), type.getBonusAttackReach());
-	}
+        public static ItemAttributeModifiers.Builder createDefaultAttributeModifiersBuilder(ModItemTier material, WeaponType type) {
+                return createAttributeModifiersBuilder(CombatHelper.getBaseAttackDamage(material, type), CombatHelper.getBaseAttackSpeed(material, type), type.getBonusAttackReach());
+        }
 
-	public static ItemAttributeModifiers.Builder createDecreasedAttributeModifiersBuilder(ModItemTier material, WeaponType type) {
-		return createAttributeModifiersBuilder(CombatHelper.getDecreasedAttackDamage(material, type), CombatHelper.getDecreasedAttackSpeed(material, type), type.getBonusAttackReach());
-	}
+        public static ItemAttributeModifiers.Builder createDecreasedAttributeModifiersBuilder(ModItemTier material, WeaponType type) {
+                return createAttributeModifiersBuilder(CombatHelper.getDecreasedAttackDamage(material, type), CombatHelper.getDecreasedAttackSpeed(material, type), type.getBonusAttackReach());
+        }
 
-	public static ItemAttributeModifiers.Builder createAttributeModifiersBuilder(float damage, float speed, float reach) 
-	{
-		ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
-		builder.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, damage, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
-		builder.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, speed, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
-		builder.add(Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(BASE_ENTITY_INTERACTION_RANGE_ID, reach, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
-		return builder;
-	}
+        public static ItemAttributeModifiers.Builder createAttributeModifiersBuilder(float damage, float speed, float reach) 
+        {
+                ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
+                builder.add(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_ID, damage, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+                builder.add(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_ID, speed, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+                builder.add(Attributes.ENTITY_INTERACTION_RANGE, new AttributeModifier(BASE_ENTITY_INTERACTION_RANGE_ID, reach, Operation.ADD_VALUE), EquipmentSlotGroup.MAINHAND);
+                return builder;
+        }
 
-	public boolean onAttackClickEntity(ItemStack stack, Player player, Entity entity)
-	{
-		return true;
-	}
-	
-	public ItemAttributeModifiers getAttributeModifiers(ItemStack stack)
-	{
-		return this.hasTwoHandedPenalty(stack) ? this.decreasedModifiers : this.defaultModifiers;
-	}
+        public boolean onAttackClickEntity(ItemStack stack, Player player, Entity entity)
+        {
+                return true;
+        }
 
-	@Override
-	public void inventoryTick(ItemStack stack, Level level, Entity entity, int i, boolean selected)
-	{
-		if (entity instanceof LivingEntity livingentity)
-		{
-			boolean penalty = this.type.getTwoHanded() > 0 && !livingentity.getOffhandItem().getItem().equals(Items.AIR);
-			if (this.hasTwoHandedPenalty(stack) != penalty)
-			{
-				stack.set(ModDataComponents.TWO_HANDED_PENALTY.get(), penalty ? this.type.getTwoHanded() : 0);
-				stack.set(DataComponents.ATTRIBUTE_MODIFIERS, this.getAttributeModifiers(stack));
-			}
-			
-			if (this.canBlock()) 
-				this.blockingPriority = !(livingentity.getMainHandItem().getItem() instanceof ShieldItem) && !(livingentity.getOffhandItem().getItem() instanceof ShieldItem);
-		}
-		super.inventoryTick(stack, level, entity, i, selected);
-	}
+        public ItemAttributeModifiers getAttributeModifiers(ItemStack stack)
+        {
+                return this.hasTwoHandedPenalty(stack) ? this.decreasedModifiers : this.defaultModifiers;
+        }
 
-	public boolean onHurtEntity(DamageSource source, LivingEntity victim, float damage)
-	{
-		if (victim.level().isClientSide() || ModDamageSources.isAdditional(source) || !(source.getEntity() instanceof LivingEntity attacker))
-			return true;
-		
-		float attackscale = source.getEntity() instanceof LivingEntity livingentity ? damage / this.getAttackDamage(livingentity.getMainHandItem()) : 1.0f;
-		
-		if (type.isHalberd() && victim.isPassenger() && victim.level().getRandom().nextInt(20) * attackscale >= 14)
-			victim.stopRiding();
-		
-		boolean flag = false;
-		if (this.isSilver())
-			flag = this.dealSilverDamage(source, attacker, victim, damage, attackscale);
-		if (!flag && this.type.getArmorPiercing() != 0 && victim.getArmorValue() > 0)
-			flag = this.dealArmorPiercingDamage(source, attacker, victim, damage);
+        @Override
+        public void inventoryTick(ItemStack stack, Level level, Entity entity, int i, boolean selected)
+        {
+                if (entity instanceof LivingEntity livingentity)
+                {
+                        boolean penalty = this.type.getTwoHanded() > 0 && !livingentity.getOffhandItem().getItem().equals(Items.AIR);
+                        if (this.hasTwoHandedPenalty(stack) != penalty)
+                        {
+                                stack.set(ModDataComponents.TWO_HANDED_PENALTY.get(), penalty ? this.type.getTwoHanded() : 0);
+                                stack.set(DataComponents.ATTRIBUTE_MODIFIERS, this.getAttributeModifiers(stack));
+                        }
 
-		if (type.isFlamebladed())
-			LacerationEffect.apply(source, victim, damage * attackscale);
+                        if (this.canBlock()) 
+                                this.blockingPriority = !(livingentity.getMainHandItem().getItem() instanceof ShieldItem) && !(livingentity.getOffhandItem().getItem() instanceof ShieldItem);
+                }
+                super.inventoryTick(stack, level, entity, i, selected);
+        }
 
-		postHurtEnemy(attacker.getWeaponItem(), attacker, victim);
-		return flag;
-	}
+        public boolean onHurtEntity(DamageSource source, LivingEntity victim, float damage)
+        {
+                if (victim.level().isClientSide() || ModDamageSources.isAdditional(source) || !(source.getEntity() instanceof LivingEntity attacker))
+                        return true;
 
-	@Override
-	public void appendHoverText(ItemStack stack, TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag flag)
-	{
-		if (this.isSilver)
-			tooltip.add(Component.translatable("silvertools.hurt", this.silverAttackDamage).withStyle(ChatFormatting.GREEN));
-		if (type.isFlamebladed())
-			tooltip.add(Component.translatable("flamebladed.hurt").withStyle(ChatFormatting.BLUE));
-		if (type.isHalberd())
-			tooltip.add(Component.translatable("halberd.hurt").withStyle(ChatFormatting.BLUE));
-		if (type.getArmorPiercing() != 0)
-			tooltip.add(Component.translatable("armorpiercing", this.type.getArmorPiercing()).withStyle(ChatFormatting.BLUE));
-		if (this.isLong())
-			tooltip.add(Component.translatable("bonusattackreach", this.type.getBonusAttackReach()).withStyle(ChatFormatting.BLUE));
-		if (type.getTwoHanded() == 1)
-			tooltip.add(Component.translatable("twohandedi").withStyle(ChatFormatting.BLUE));
-		else if (type.getTwoHanded() > 1)
-			tooltip.add(Component.translatable("twohandedii").withStyle(ChatFormatting.BLUE));
-		if (this.canBlock())
-			tooltip.add(Component.translatable("maxdamageblock", this.getMaxBlockDamage()).withStyle(ChatFormatting.BLUE));
-		tooltip.add(Component.translatable("kgweight", this.getWeight()).withStyle(ChatFormatting.BLUE));
-		if (this.hasTwoHandedPenalty(stack))
-		{
-			tooltip.add(Component.translatable("twohandedpenalty_1").withStyle(ChatFormatting.RED));
-			tooltip.add(Component.translatable("twohandedpenalty_2").withStyle(ChatFormatting.RED));
-		}
-		super.appendHoverText(stack, tooltipContext, tooltip, flag);
-	}
+                float attackscale = source.getEntity() instanceof LivingEntity livingentity ? damage / this.getAttackDamage(livingentity.getMainHandItem()) : 1.0f;
 
-	public boolean hasTwoHandedPenalty(ItemStack stack)
-	{
-		Integer value = stack.get(ModDataComponents.TWO_HANDED_PENALTY.get());
-		return value != null && value > 0;
-	}
+                if (type.isHalberd() && victim.isPassenger() && victim.level().getRandom().nextInt(20) * attackscale >= 14)
+                        victim.stopRiding();
 
-	public float getAttackDamage(ItemStack stack)
-	{
-		return (float) this.getAttributeModifiers(stack).modifiers().stream().filter(m -> m.modifier().id().equals(BASE_ATTACK_DAMAGE_ID)).findFirst().orElseThrow().modifier().amount();
-	}
+                boolean flag = false;
+                if (this.isSilver())
+                        flag = this.dealSilverDamage(source, attacker, victim, damage, attackscale);
+                if (!flag && this.type.getArmorPiercing() != 0 && victim.getArmorValue() > 0)
+                        flag = this.dealArmorPiercingDamage(source, attacker, victim, damage);
 
-	public float getAttackReach(float baseReach)
-	{
-		return baseReach + getBonusAttackReach();
-	}
+                if (type.isFlamebladed())
+                        LacerationEffect.apply(source, victim, damage * attackscale);
 
-	public float getBonusAttackReach()
-	{
-		return EpicKnights.BC_or_EF_installed ? 0.0f : type.getBonusAttackReach();
-	}
-	
-	public boolean isLong()
-	{
-		return this.getBonusAttackReach() > 0.0;
-	}
+                postHurtEnemy(attacker.getWeaponItem(), attacker, victim);
+                return flag;
+        }
 
-	@Deprecated(forRemoval = true)
-	public float getSilverDamage(ItemStack stack, float damage)
-	{
-		return this.silverAttackDamage * damage / this.getAttackDamage(stack);
-	}
+        @Override
+        public void appendHoverText(ItemStack stack, TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag flag)
+        {
+                if (this.isSilver)
+                        tooltip.add(Component.translatable("silvertools.hurt", this.silverAttackDamage).withStyle(ChatFormatting.GREEN));
+                if (type.isFlamebladed())
+                        tooltip.add(Component.translatable("flamebladed.hurt").withStyle(ChatFormatting.BLUE));
+                if (type.isHalberd())
+                        tooltip.add(Component.translatable("halberd.hurt").withStyle(ChatFormatting.BLUE));
+                if (type.getArmorPiercing() != 0)
+                        tooltip.add(Component.translatable("armorpiercing", this.type.getArmorPiercing()).withStyle(ChatFormatting.BLUE));
+                if (this.isLong())
+                        tooltip.add(Component.translatable("bonusattackreach", this.type.getBonusAttackReach()).withStyle(ChatFormatting.BLUE));
+                if (type.getTwoHanded() == 1)
+                        tooltip.add(Component.translatable("twohandedi").withStyle(ChatFormatting.BLUE));
+                else if (type.getTwoHanded() > 1)
+                        tooltip.add(Component.translatable("twohandedii").withStyle(ChatFormatting.BLUE));
+                if (this.canBlock())
+                        tooltip.add(Component.translatable("maxdamageblock", this.getMaxBlockDamage()).withStyle(ChatFormatting.BLUE));
+                tooltip.add(Component.translatable("kgweight", this.getWeight()).withStyle(ChatFormatting.BLUE));
+                if (this.hasTwoHandedPenalty(stack))
+                {
+                        tooltip.add(Component.translatable("twohandedpenalty_1").withStyle(ChatFormatting.RED));
+                        tooltip.add(Component.translatable("twohandedpenalty_2").withStyle(ChatFormatting.RED));
+                }
+                super.appendHoverText(stack, tooltipContext, tooltip, flag);
+        }
 
-	public float getMaxBlockDamage()
-	{
-		return type.getMaxBlockDamage();
-	}
+        public boolean hasTwoHandedPenalty(ItemStack stack)
+        {
+                Integer value = stack.get(ModDataComponents.TWO_HANDED_PENALTY.get());
+                return value != null && value > 0;
+        }
 
-	public float getWeight()
-	{
-		return type.getWeight();
-	}
+        public float getAttackDamage(ItemStack stack)
+        {
+                return (float) this.getAttributeModifiers(stack).modifiers().stream().filter(m -> m.modifier().id().equals(BASE_ATTACK_DAMAGE_ID)).findFirst().orElseThrow().modifier().amount();
+        }
 
-	public boolean isSilver()
-	{
-		return this.isSilver;
-	}
+        public float getAttackReach(float baseReach)
+        {
+                return baseReach + getBonusAttackReach();
+        }
 
-	public boolean canBlock(Player player)
-	{
-		return player.getAttackStrengthScale(0.0f) == 1.0f && this.canBlock();
-	}
+        public float getBonusAttackReach()
+        {
+                return EpicKnights.BC_or_EF_installed ? 0.0f : type.getBonusAttackReach();
+        }
 
-	public boolean canBlock()
-	{
-		return type.canBlock();
-	}
+        public boolean isLong()
+        {
+                return this.getBonusAttackReach() > 0.0;
+        }
 
-	boolean haveBlocked(RandomSource rand, DamageSource source)
-	{
-		return source.isDirect() && rand.nextInt(18) > this.getWeight();
-	}
+        @Deprecated(forRemoval = true)
+        public float getSilverDamage(ItemStack stack, float damage)
+        {
+                return this.silverAttackDamage * damage / this.getAttackDamage(stack);
+        }
 
-	@Override
-	public InteractionResult use(Level level, Player player, InteractionHand hand)
-	{
-		if (canBlock(player) && blockingPriority)
-		{
-			ItemStack stack = player.getItemInHand(hand);
-			player.startUsingItem(hand);
+        public float getMaxBlockDamage()
+        {
+                return type.getMaxBlockDamage();
+        }
 
-			return InteractionResult.CONSUME;
-		}
+        public float getWeight()
+        {
+                return type.getWeight();
+        }
 
-		return super.use(level, player, hand);
-	}
+        public boolean isSilver()
+        {
+                return this.isSilver;
+        }
 
-	@Override
-	public int getUseDuration(ItemStack stack, LivingEntity entity)
-	{
-		return this.canBlock() ? (int) (500 / this.getWeight()) : 0;
-	}
+        public boolean canBlock(Player player)
+        {
+                return player.getAttackStrengthScale(0.0f) == 1.0f && this.canBlock();
+        }
 
-	@Override
-	public ItemUseAnimation getUseAnimation(ItemStack stack)
-	{
-		return (canBlock() && blockingPriority) ? ItemUseAnimation.BLOCK : super.getUseAnimation(stack);
-	}
+        public boolean canBlock()
+        {
+                return type.canBlock();
+        }
 
-	public void onBlocked(ItemStack stack, float damage, LivingEntity victim, DamageSource source)
-	{
-		if (!this.canBlock() || ModDamageSources.isAdditional(source))
-			return;
+        boolean haveBlocked(RandomSource rand, DamageSource source)
+        {
+                return source.isDirect() && rand.nextInt(18) > this.getWeight();
+        }
 
-		Entity attacker = source.getEntity();
-		float f = CombatHelper.getArmorPiercingFactor(attacker);
+        @Override
+        public InteractionResult use(Level level, Player player, InteractionHand hand)
+        {
+                if (canBlock(player) && blockingPriority)
+                {
+                        ItemStack stack = player.getItemInHand(hand);
+                        player.startUsingItem(hand);
 
-		if (source.is(DamageTypes.PLAYER_EXPLOSION) || source.is(DamageTypes.EXPLOSION))
-		{
-			victim.hurt(ModDamageSources.additional(), damage);
-		}
-		else if (!haveBlocked(victim.level().getRandom(), source))
-		{
-			victim.hurt(ModDamageSources.additional(), damage);
-		}
-		else if (damage > this.getMaxBlockDamage())
-		{
-			f *= 1.5f;
-			float damage1 = damage - getMaxBlockDamage();
-			victim.hurt(ModDamageSources.additional(), damage1);
-		}
+                        return InteractionResult.CONSUME;
+                }
 
-		stack.hurtAndBreak((int) (f * damage), victim, EquipmentSlot.MAINHAND);
-	}
+                return super.use(level, player, hand);
+        }
 
-	public boolean dealSilverDamage(DamageSource source, LivingEntity attacker, LivingEntity victim, float damage, float attackscale)
-	{
-		if (victim.getType().is(EntityTypeTags.UNDEAD))
-		{
-			victim.hurt(ModDamageSources.silverAttack(attacker), CombatHelper.getDamageAfterAbsorb(source, victim, this.silverAttackDamage) * attackscale + damage);
-			return true;
-		}
-		return false;
-	}
+        @Override
+        public int getUseDuration(ItemStack stack, LivingEntity entity)
+        {
+                return this.canBlock() ? (int) (500 / this.getWeight()) : 0;
+        }
 
-	public boolean dealArmorPiercingDamage(DamageSource source, LivingEntity attacker, LivingEntity victim, float damage)
-	{
-		float afterabsorb = CombatHelper.getDamageAfterAbsorb(source, victim, damage);
-		afterabsorb = Math.max(afterabsorb - victim.getAbsorptionAmount(), 0.0f);
-		float pierced = Math.max(((float) type.getArmorPiercing()) / 100.0f * (damage - afterabsorb), 0.0f);
-		victim.hurt(ModDamageSources.armorPiercing(attacker), damage + pierced);
-		return true;
-	}
+        @Override
+        public ItemUseAnimation getUseAnimation(ItemStack stack)
+        {
+                return (canBlock() && blockingPriority) ? ItemUseAnimation.BLOCK : super.getUseAnimation(stack);
+        }
 
-// Removed registerModelProperty, will register in client mod
+        public void onBlocked(ItemStack stack, float damage, LivingEntity victim, DamageSource source)
+        {
+                if (!this.canBlock() || ModDamageSources.isAdditional(source))
+                        return;
+
+                Entity attacker = source.getEntity();
+                float f = CombatHelper.getArmorPiercingFactor(attacker);
+
+                if (source.is(DamageTypes.PLAYER_EXPLOSION) || source.is(DamageTypes.EXPLOSION))
+                {
+                        victim.hurt(ModDamageSources.additional(), damage);
+                }
+                else if (!haveBlocked(victim.level().getRandom(), source))
+                {
+                        victim.hurt(ModDamageSources.additional(), damage);
+                }
+                else if (damage > this.getMaxBlockDamage())
+                {
+                        f *= 1.5f;
+                        float damage1 = damage - getMaxBlockDamage();
+                        victim.hurt(ModDamageSources.additional(), damage1);
+                }
+
+                stack.hurtAndBreak((int) (f * damage), victim, EquipmentSlot.MAINHAND);
+        }
+
+        public boolean dealSilverDamage(DamageSource source, LivingEntity attacker, LivingEntity victim, float damage, float attackscale)
+        {
+                if (victim.getType().is(EntityTypeTags.UNDEAD))
+                {
+                        victim.hurt(ModDamageSources.silverAttack(attacker), CombatHelper.getDamageAfterAbsorb(source, victim, this.silverAttackDamage) * attackscale + damage);
+                        return true;
+                }
+                return false;
+        }
+
+        public boolean dealArmorPiercingDamage(DamageSource source, LivingEntity attacker, LivingEntity victim, float damage)
+        {
+                float afterabsorb = CombatHelper.getDamageAfterAbsorb(source, victim, damage);
+                afterabsorb = Math.max(afterabsorb - victim.getAbsorptionAmount(), 0.0f);
+                float pierced = Math.max(((float) type.getArmorPiercing()) / 100.0f * (damage - afterabsorb), 0.0f);
+                victim.hurt(ModDamageSources.armorPiercing(attacker), damage + pierced);
+                return true;
+        }
+
+        @Override
+        public void registerModelProperty() {
+                // TODO: Implement model property registration if needed
+        }
 }

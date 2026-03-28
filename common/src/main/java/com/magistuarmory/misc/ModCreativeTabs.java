@@ -6,7 +6,7 @@ import com.magistuarmory.item.ModItems;
 import dev.architectury.platform.Platform;
 import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
-// Removed Architectury DeferredSupplier and RegistrySupplier imports
+import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -115,14 +115,14 @@ public class ModCreativeTabs
 		append(ARMOR, ModItems.BARDING);
 		append(ARMOR, ModItems.CHAINMAIL_HORSE_ARMOR);
 
-		append(PARTICULAR_WEAPONS, ModItems.BLACKSMITH_HAMMER);
-		append(PARTICULAR_WEAPONS, ModItems.BARBED_CLUB);
-		append(PARTICULAR_WEAPONS, ModItems.PITCHFORK);
-		append(PARTICULAR_WEAPONS, ModItems.NOBLE_SWORD);
-		append(PARTICULAR_WEAPONS, ModItems.CLUB);
-		append(PARTICULAR_WEAPONS, ModItems.MESSER_SWORD);
-		append(PARTICULAR_WEAPONS, ModItems.LONGBOW);
-		append(PARTICULAR_WEAPONS, ModItems.HEAVY_CROSSBOW);
+		if (ModItems.BLACKSMITH_HAMMER != null) append(PARTICULAR_WEAPONS, ModItems.BLACKSMITH_HAMMER.get());
+		if (ModItems.BARBED_CLUB != null) append(PARTICULAR_WEAPONS, ModItems.BARBED_CLUB.get());
+		if (ModItems.PITCHFORK != null) append(PARTICULAR_WEAPONS, ModItems.PITCHFORK.get());
+		if (ModItems.NOBLE_SWORD != null) append(PARTICULAR_WEAPONS, ModItems.NOBLE_SWORD.get());
+		if (ModItems.CLUB != null) append(PARTICULAR_WEAPONS, ModItems.CLUB.get());
+		if (ModItems.MESSER_SWORD != null) append(PARTICULAR_WEAPONS, ModItems.MESSER_SWORD.get());
+		if (ModItems.LONGBOW != null) append(PARTICULAR_WEAPONS, ModItems.LONGBOW.get());
+		if (ModItems.HEAVY_CROSSBOW != null) append(PARTICULAR_WEAPONS, ModItems.HEAVY_CROSSBOW.get());
 
 		append(RUSTED, ModItems.RUSTED_BASTARD_SWORD);
 		append(RUSTED, ModItems.RUSTED_HEAVY_MACE);
@@ -140,67 +140,67 @@ public class ModCreativeTabs
 		append(RUSTED, ModItems.RUSTED_KETTLEHAT);
 		
 		for (RegistrySupplier<? extends Item> item : ModItems.INSTANCE.ingredientItems)
-			append(INGRIDIENTS_RESOURCE_KEY, item);
+			append(INGRIDIENTS_RESOURCE_KEY, item.get());
 
 		for (RegistrySupplier<? extends Item> supplier : ModItems.STILETTOS.get())
-			append(WEAPONS, supplier);
+			append(WEAPONS, supplier.get());
 		for (RegistrySupplier<? extends Item> supplier : ModItems.SHORT_SWORDS.get())
-			append(WEAPONS, supplier);
+			append(WEAPONS, supplier.get());
 		for (RegistrySupplier<? extends Item> supplier : ModItems.KATZBALGERS.get())
-			append(WEAPONS, supplier);
+			append(WEAPONS, supplier.get());
 		for (RegistrySupplier<? extends Item> supplier : ModItems.PIKES.get())
-			append(WEAPONS, supplier);
+			append(WEAPONS, supplier.get());
 		for (RegistrySupplier<? extends Item> supplier : ModItems.RANSEURS.get())
-			append(WEAPONS, supplier);
+			append(WEAPONS, supplier.get());
 		for (RegistrySupplier<? extends Item> supplier : ModItems.AHLSPIESSES.get())
-			append(WEAPONS, supplier);
+			append(WEAPONS, supplier.get());
 		for (RegistrySupplier<? extends Item> supplier : ModItems.GIANT_LANCES.get())
-			append(WEAPONS, supplier);
+			append(WEAPONS, supplier.get());
 		for (RegistrySupplier<? extends Item> supplier : ModItems.BASTARD_SWORDS.get())
-			append(WEAPONS, supplier);
+			append(WEAPONS, supplier.get());
 		for (RegistrySupplier<? extends Item> supplier : ModItems.ESTOCS.get())
-			append(WEAPONS, supplier);
+			append(WEAPONS, supplier.get());
 		for (RegistrySupplier<? extends Item> supplier : ModItems.CLAYMORS.get())
-			append(WEAPONS, supplier);
+			append(WEAPONS, supplier.get());
 		for (RegistrySupplier<? extends Item> supplier : ModItems.ZWEIHANDERS.get())
-			append(WEAPONS, supplier);
+			append(WEAPONS, supplier.get());
 		for (RegistrySupplier<? extends Item> supplier : ModItems.FLAME_BLADED_SWORDS.get())
-			append(WEAPONS, supplier);
+			append(WEAPONS, supplier.get());
 		for (RegistrySupplier<? extends Item> supplier : ModItems.LOCHABER_AXES.get())
-			append(WEAPONS, supplier);
+			append(WEAPONS, supplier.get());
 		for (RegistrySupplier<? extends Item> supplier : ModItems.CONCAVE_EDGED_HALBERDS.get())
-			append(WEAPONS, supplier);
+			append(WEAPONS, supplier.get());
 		for (RegistrySupplier<? extends Item> supplier : ModItems.HEAVY_MACES.get())
-			append(WEAPONS, supplier);
+			append(WEAPONS, supplier.get());
 		for (RegistrySupplier<? extends Item> supplier : ModItems.HEAVY_WAR_HAMMERS.get())
-			append(WEAPONS, supplier);
+			append(WEAPONS, supplier.get());
 		for (RegistrySupplier<? extends Item> supplier : ModItems.LUCERNE_HAMMERS.get())
-			append(WEAPONS, supplier);
+			append(WEAPONS, supplier.get());
 		for (RegistrySupplier<? extends Item> supplier : ModItems.MORNINGSTARS.get())
-			append(WEAPONS, supplier);
+			append(WEAPONS, supplier.get());
 		for (RegistrySupplier<? extends Item> supplier : ModItems.FLAILS.get())
-			append(WEAPONS, supplier);
+			append(WEAPONS, supplier.get());
 		for (RegistrySupplier<? extends Item> supplier : ModItems.GUISARMES.get())
-			append(WEAPONS, supplier);
+			append(WEAPONS, supplier.get());
 
 		for (RegistrySupplier<? extends Item> supplier : ModItems.HEATER_SHIELDS.get())
-			append(SHIELDS, supplier);
+			append(SHIELDS, supplier.get());
 		for (RegistrySupplier<? extends Item> supplier : ModItems.TARGETS.get())
-			append(SHIELDS, supplier);
+			append(SHIELDS, supplier.get());
 		for (RegistrySupplier<? extends Item> supplier : ModItems.BUCKLERS.get())
-			append(SHIELDS, supplier);
+			append(SHIELDS, supplier.get());
 		for (RegistrySupplier<? extends Item> supplier : ModItems.RONDACHES.get())
-			append(SHIELDS, supplier);
+			append(SHIELDS, supplier.get());
 		for (RegistrySupplier<? extends Item> supplier : ModItems.TARTSCHES.get())
-			append(SHIELDS, supplier);
+			append(SHIELDS, supplier.get());
 		for (RegistrySupplier<? extends Item> supplier : ModItems.ELLIPTICAL_SHIELDS.get())
-			append(SHIELDS, supplier);
+			append(SHIELDS, supplier.get());
 		for (RegistrySupplier<? extends Item> supplier : ModItems.ROUND_SHIELDS.get())
-			append(SHIELDS, supplier);
+			append(SHIELDS, supplier.get());
 		for (RegistrySupplier<? extends Item> supplier : ModItems.PAVISES.get())
-			append(SHIELDS, supplier);
+			append(SHIELDS, supplier.get());
 		for (RegistrySupplier<? extends Item> supplier : ModItems.KITE_SHIELDS.get())
-			append(SHIELDS, supplier);
+			append(SHIELDS, supplier.get());
 		
 		for (RegistrySupplier<? extends ArmorDecoration> supplier : ModItems.INSTANCE.armorDecorationItems) {
 			if (supplier == ModItems.CAT_EARS_DECORATION) {

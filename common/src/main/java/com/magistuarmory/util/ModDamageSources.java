@@ -1,10 +1,12 @@
 package com.magistuarmory.util;
 
+import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import com.magistuarmory.util.ModDamageTypes;
 
@@ -17,7 +19,8 @@ public class ModDamageSources
 	public static void setup(RegistryAccess registryAccess)
 	{
 		DAMAGE_TYPES = registryAccess.lookup(Registries.DAMAGE_TYPE).orElseThrow();
-		ADDITIONAL = new DamageSource(DAMAGE_TYPES.getHolder(ModDamageTypes.ADDITIONAL).orElseThrow());
+		Holder<DamageType> additionalHolder = DAMAGE_TYPES.getOrThrow(ModDamageTypes.ADDITIONAL);
+		ADDITIONAL = new DamageSource(additionalHolder);
 	}
 	
 	public static DamageSource additional()
@@ -27,17 +30,20 @@ public class ModDamageSources
 
 	public static DamageSource additional(Entity attacker)
 	{
-		return attacker == null ? additional() : new DamageSource(DAMAGE_TYPES.getHolder(ModDamageTypes.ENTITY_ADDITIONAL).orElseThrow(), attacker);
+		Holder<DamageType> holder = DAMAGE_TYPES.getOrThrow(ModDamageTypes.ENTITY_ADDITIONAL);
+		return attacker == null ? additional() : new DamageSource(holder, attacker);
 	}
 
 	public static DamageSource silverAttack(Entity attacker)
 	{
-		return new DamageSource(DAMAGE_TYPES.getHolder(ModDamageTypes.SILVER).orElseThrow(), attacker);
+		Holder<DamageType> holder = DAMAGE_TYPES.getOrThrow(ModDamageTypes.SILVER);
+		return new DamageSource(holder, attacker);
 	}
 
 	public static DamageSource armorPiercing(Entity attacker)
 	{
-		return new DamageSource(DAMAGE_TYPES.getHolder(ModDamageTypes.ARMOR_PIERCING).orElseThrow(), attacker);
+		Holder<DamageType> holder = DAMAGE_TYPES.getOrThrow(ModDamageTypes.ARMOR_PIERCING);
+		return new DamageSource(holder, attacker);
 	}
 
 	public static boolean isAdditional(DamageSource source) throws NullPointerException
