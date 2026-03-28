@@ -30,19 +30,19 @@ public class ModDamageSources
 
 	public static DamageSource additional(Entity attacker)
 	{
-		Holder<DamageType> holder = Holder.direct(DAMAGE_TYPES.getOrThrow(ModDamageTypes.ENTITY_ADDITIONAL));
+		Holder<DamageType> holder = DAMAGE_TYPES.getOrThrow(ModDamageTypes.ENTITY_ADDITIONAL);
 		return attacker == null ? additional() : new DamageSource(holder, attacker);
 	}
 
 	public static DamageSource silverAttack(Entity attacker)
 	{
-		Holder<DamageType> holder = Holder.direct(DAMAGE_TYPES.getOrThrow(ModDamageTypes.SILVER));
+		Holder<DamageType> holder = DAMAGE_TYPES.getOrThrow(ModDamageTypes.SILVER);
 		return new DamageSource(holder, attacker);
 	}
 
 	public static DamageSource armorPiercing(Entity attacker)
 	{
-		Holder<DamageType> holder = Holder.direct(DAMAGE_TYPES.getOrThrow(ModDamageTypes.ARMOR_PIERCING));
+		Holder<DamageType> holder = DAMAGE_TYPES.getOrThrow(ModDamageTypes.ARMOR_PIERCING);
 		return new DamageSource(holder, attacker);
 	}
 
