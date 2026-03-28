@@ -16,24 +16,24 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 @Environment(EnvType.CLIENT)
-public class ArmorDecorationModelSet
+public class ArmorDecorationModelSet<T extends LivingEntity>
 {
-    final Map<ModelLayerLocation, ArmorDecorationModel> map = new HashMap<>();
+    final Map<ModelLayerLocation, ArmorDecorationModel<T>> map = new HashMap<>();
 
     public void registerDecorations(List<RegistrySupplier<? extends ArmorDecoration>> decorations, EntityRendererProvider.Context context) {
         for (Supplier<? extends ArmorDecoration> supplier : decorations)
         {
             ModelLayerLocation location = supplier.get().createModelLocation();
-            this.map.putIfAbsent(location, new ArmorDecorationModel(context.bakeLayer(location)));
+            this.map.putIfAbsent(location, new ArmorDecorationModel<>(context.bakeLayer(location)));
         }
     }
 
-    public ArmorDecorationModel get(ModelLayerLocation location)
+    public ArmorDecorationModel<T> get(ModelLayerLocation location)
     {
         return this.map.get(location);
     }
 
-    public ArmorDecorationModel get(ResourceLocation location)
+    public ArmorDecorationModel<T> get(ResourceLocation location)
     {
         return this.get(new ModelLayerLocation(location, "decoration"));
     }

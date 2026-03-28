@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Environment(EnvType.CLIENT)
-public class HorseArmorDecorationLayer extends RenderLayer<HorseRenderState, HorseModel> implements ArmorPatternLayer
+public class HorseArmorDecorationLayer implements ArmorPatternLayer
 {
    private static final String BASE_DIR = "textures/entity/horse/armor/";
    private final HorseArmorDecorationModel model;
@@ -38,13 +38,12 @@ public class HorseArmorDecorationLayer extends RenderLayer<HorseRenderState, Hor
    private final String name;
    private final String dirprefix;
 
-   public HorseArmorDecorationLayer(RenderLayerParent<HorseRenderState, HorseModel> parent, EntityRendererProvider.Context context, ResourceLocation texture, String name)
+   public HorseArmorDecorationLayer(EntityRendererProvider.Context context, ResourceLocation texture, String name)
    {
-      super(parent);
       this.name = name;
       this.dirprefix = BASE_DIR + name + "/";
       this.baseTexture = texture;
-      this.model = new HorseArmorDecorationModel<>(context.bakeLayer(ModModels.createDecorationLocation(ResourceLocation.fromNamespaceAndPath(texture.getNamespace(), name))));
+      this.model = new HorseArmorDecorationModel(context.bakeLayer(new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath(texture.getNamespace(), name), "decoration")));
       this.basePatternTexture = ResourceLocation.fromNamespaceAndPath(EpicKnights.ID, dirprefix + "base.png");
    }
 
@@ -55,7 +54,7 @@ public class HorseArmorDecorationLayer extends RenderLayer<HorseRenderState, Hor
       if (stack.getItem() instanceof AnimalArmorItem && patterns != null)
       {
          DyeColor basecolor = stack.get(DataComponents.BASE_COLOR);
-         this.getParentModel().copyPropertiesTo(this.model);
+         // TODO: restore parent model copying once rendering is updated for 1.21.4
          List<Pair<Holder<BannerPattern>, DyeColor>> list = patterns.layers().stream().map(l -> Pair.of(l.pattern(), l.color())).collect(Collectors.toList());
          this.renderPatterns(pose, buffer, p, OverlayTexture.NO_OVERLAY, list, false, this.model.parts(), basecolor);
       }

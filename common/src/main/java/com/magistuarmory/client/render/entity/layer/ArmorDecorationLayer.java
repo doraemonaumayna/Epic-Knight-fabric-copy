@@ -49,12 +49,12 @@ public class ArmorDecorationLayer<T extends LivingEntity> implements ArmorPatter
    private final String coatDirPrefix;
    private final ResourceLocation coatTexture;
    private final ResourceLocation basePatternTexture;
-   private final ArmorDecorationModelSet decorationModels;
+   private final ArmorDecorationModelSet<T> decorationModels;
 
-   public ArmorDecorationLayer(ArmorDecorationModelSet decorationModels, EntityRendererProvider.Context context, ResourceLocation location)
+   public ArmorDecorationLayer(ArmorDecorationModelSet<T> decorationModels, EntityRendererProvider.Context context, ResourceLocation location)
    {
       this.decorationModels = decorationModels;
-      this.coatModel = new SurcoatModel(context.bakeLayer(new ModelLayerLocation(location, "decoration")));
+      this.coatModel = new SurcoatModel<>(context.bakeLayer(new ModelLayerLocation(location, "decoration")));
       this.coatDirPrefix = this.getDirPrefix(location);
       this.coatTexture = this.getTexture(location);
       this.basePatternTexture = ResourceLocation.fromNamespaceAndPath(EpicKnights.ID, coatDirPrefix + "base.png");
@@ -75,7 +75,7 @@ public class ArmorDecorationLayer<T extends LivingEntity> implements ArmorPatter
       return ARMOR_DIR_PREFIX + location.getPath() + "/";
    }
 
-   public void render(PoseStack pose, MultiBufferSource buffer, int p, HumanoidRenderState state, float f, float f2, float f3, float f4, float f5, float f6)
+   public void render(PoseStack pose, MultiBufferSource buffer, int p, Object state, float f, float f2, float f3, float f4, float f5, float f6)
    {
       // Rendering disabled for 1.21.4 compatibility
       throw new UnsupportedOperationException("Armor decoration rendering not yet updated for 1.21.4");
@@ -91,10 +91,10 @@ public class ArmorDecorationLayer<T extends LivingEntity> implements ArmorPatter
             for (ArmorDecorationItem.DecorationInfo info : createDecorations(getDecorationTags(stack)))
             {
                ResourceLocation location = info.location();
-               ArmorDecorationModel model = this.getArmorDecorationModel(location);
+               ArmorDecorationModel<T> model = this.getArmorDecorationModel(location);
                if (model != null)
                {
-                  this.getParentModel().copyPropertiesTo(model);
+                  // TODO: restore parent model copying once rendering is updated for 1.21.4
                   if (info.dyeable())
                   {
                      renderDecoration(pose, buffer, p, OverlayTexture.NO_OVERLAY, info.color(), stack.hasFoil(), model.parts(), getTexture(location));
@@ -111,7 +111,7 @@ public class ArmorDecorationLayer<T extends LivingEntity> implements ArmorPatter
          if (slot == EquipmentSlot.CHEST && patterns != null)
          {
             DyeColor basecolor = stack.get(DataComponents.BASE_COLOR);
-            this.getParentModel().copyPropertiesTo(this.coatModel);
+            // TODO: restore parent model copying once rendering is updated for 1.21.4
             renderDecoration(pose, buffer, p, OverlayTexture.NO_OVERLAY, stack.hasFoil(), this.coatModel.parts(), this.coatTexture);
             List<Pair<Holder<BannerPattern>, DyeColor>> list = patterns == null ? new ArrayList<>() : patterns.layers().stream().map(l -> Pair.of(l.pattern(), l.color())).collect(Collectors.toList());
             renderPatterns(pose, buffer, p, OverlayTexture.NO_OVERLAY, list, stack.hasFoil(), this.coatModel.parts(), basecolor);
