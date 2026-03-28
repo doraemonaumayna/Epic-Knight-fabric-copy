@@ -1,8 +1,7 @@
-import net.minecraft.world.item.Item;
-
 package com.magistuarmory.item;
 
 import dev.architectury.platform.Platform;
+import net.minecraft.world.item.Item;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
