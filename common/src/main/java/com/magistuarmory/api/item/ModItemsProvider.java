@@ -199,15 +199,14 @@ public abstract class ModItemsProvider
 		return crossbow;
 	}
 
-	public static ItemStack getDecoratedStack(RegistrySupplier<? extends Item> suppler, RegistrySupplier<? extends ArmorDecorationItem> decorationsuppler)
+	public static ItemStack getDecoratedStack(Item item, ArmorDecorationItem decoration)
 	{
-		if (suppler == null)
+		if (item == null)
 			return ItemStack.EMPTY;
 		
-		ItemStack stack = new ItemStack(suppler.get());
-		ArmorDecorationItem decorationitem = decorationsuppler.get();
-		ItemStack decorationstack = new ItemStack(decorationitem);
-		decorationitem.decorate(stack, decorationstack);
+		ItemStack stack = new ItemStack(item);
+		ItemStack decorationstack = new ItemStack(decoration);
+		decoration.decorate(stack, decorationstack);
 		return stack;
 	}
 

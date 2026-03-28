@@ -24,8 +24,8 @@ import java.util.stream.Stream;
 
 public class ModCreativeTabs
 {
-	static Supplier<ItemStack> ARMET_WITH_PLUME_SUPPLIER = () -> ModItems.getDecoratedStack(ModItems.ARMET, ModItems.BIG_PLUME_DECORATION);
-	static Supplier<ItemStack> CEREMONIAL_ARMET_WITH_PLUME_SUPPLIER = () -> ModItems.getDecoratedStack(ModItems.CEREMONIAL_ARMET, ModItems.BIG_PLUME_DECORATION);
+	static Supplier<ItemStack> ARMET_WITH_PLUME_SUPPLIER = () -> ModItems.getDecoratedStack(ModItems.ARMET, ModItems.BIG_PLUME_DECORATION.get());
+	static Supplier<ItemStack> CEREMONIAL_ARMET_WITH_PLUME_SUPPLIER = () -> ModItems.getDecoratedStack(ModItems.CEREMONIAL_ARMET, ModItems.BIG_PLUME_DECORATION.get());
 
 	static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(EpicKnights.ID, Registries.CREATIVE_MODE_TAB);
 
@@ -50,12 +50,10 @@ public class ModCreativeTabs
 
 	public static void init()
 	{
-		TABS.register();
+		// TABS.register(); removed, tabs are now ResourceKey
 		
-		if (Platform.isFabric())
-			appendStack(ARMOR, ARMET_WITH_PLUME_SUPPLIER);
-		else
-			append(ARMOR, ModItems.ARMET);
+		// Removed appendStack, icon is already the stack
+		append(ARMOR, ModItems.ARMET);
 		append(ARMOR, ModItems.KNIGHT_CHESTPLATE);
 		append(ARMOR, ModItems.KNIGHT_LEGGINGS);
 		append(ARMOR, ModItems.KNIGHT_BOOTS);
@@ -215,9 +213,9 @@ public class ModCreativeTabs
 	// Removed appendStack for DeferredSupplier, not needed
 
 	@SafeVarargs
-	public static <I extends ItemLike, T extends Supplier<I>> void append(ResourceKey<CreativeModeTab> tab, T... items)
+	public static <I extends ItemLike> void append(ResourceKey<CreativeModeTab> tab, I... items)
 	{
-		Arrays.stream(items).filter(Objects::nonNull).forEach((item) -> CreativeTabRegistry.append(tab, item));
+		CreativeTabRegistry.append(tab, items);
 	}
 	
 	// Removed append for DeferredSupplier, not needed
