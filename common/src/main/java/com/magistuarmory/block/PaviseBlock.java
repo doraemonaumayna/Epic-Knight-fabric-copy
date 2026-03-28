@@ -50,10 +50,10 @@ public class PaviseBlock extends AbstractBannerBlock
 	static final Vector3d BOXMAX = new Vector3d(1.0, 1.0, 1.0);
 	
 	public final MapCodec<PaviseBlock> codec;
-	private final Supplier<BlockEntityType<PaviseBlockEntity>> entityType;
+	private final BlockEntityType<PaviseBlockEntity> entityType;
 	protected String shieldId;
 	
-	public PaviseBlock(DyeColor color, Properties prop, String shieldId, Supplier<BlockEntityType<PaviseBlockEntity>> entityType)
+	public PaviseBlock(DyeColor color, Properties prop, String shieldId, BlockEntityType<PaviseBlockEntity> entityType)
 	{
 		super(color, prop);
 		this.shieldId = shieldId;
@@ -63,7 +63,7 @@ public class PaviseBlock extends AbstractBannerBlock
 	}
 	
 	public BlockEntityType<PaviseBlockEntity> getEntityType() {
-		return this.entityType.get();
+		return this.entityType;
 	}
 
 	@Override

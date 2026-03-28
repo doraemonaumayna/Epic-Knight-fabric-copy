@@ -26,6 +26,10 @@ public class ModItems extends ModItemsProvider
 
 	public static ModItems INSTANCE = new ModItems();
 
+	public ModItems() {
+		super(EpicKnights.ID);
+	}
+
 	//Armor
 	public static final Item ARMET = register("armet", new KnightItem(ArmorTypes.ARMET, net.minecraft.world.item.equipment.ArmorType.HELMET, new Item.Properties()));
 	public static final Item KNIGHT_CHESTPLATE = register("knight_chestplate", new MedievalArmorItem(ArmorTypes.KNIGHT, net.minecraft.world.item.equipment.ArmorType.CHESTPLATE, new Item.Properties()));
@@ -130,7 +134,7 @@ public class ModItems extends ModItemsProvider
 	public static final BiFunction<ModItemTier, Properties, RegistrySupplier<MedievalShieldItem>> TARTSCHE_SUPPLY = (material, prop) -> INSTANCE.addMedievalShieldItem(material.getMaterialName() + "_tartsche", "tartsche", prop, material, true, true, SHIELDS_CONFIG.get("tartsche"));
 	public static final BiFunction<ModItemTier, Properties, RegistrySupplier<MedievalShieldItem>> ELLIPTICAL_SHIELD_SUPPLY = (material, prop) -> INSTANCE.addMedievalShieldItem(material.getMaterialName() + "_ellipticalshield", "ellipticalshield", prop, material, true, true, SHIELDS_CONFIG.get("ellipticalShield"));
 	public static final BiFunction<ModItemTier, Properties, RegistrySupplier<MedievalShieldItem>> ROUND_SHIELD_SUPPLY = (material, prop) -> INSTANCE.addMedievalShieldItem(material.getMaterialName() + "_roundshield", "roundshield", prop, material, true, true, SHIELDS_CONFIG.get("roundShield"));
-	public static final BiFunction<ModItemTier, Properties, RegistrySupplier<MedievalShieldItem>> PAVISE_SUPPLY = (material, prop) -> INSTANCE.addPaviseItem(material.getMaterialName() + "_pavese", "pavese", prop, material, true, true, SHIELDS_CONFIG.get("pavise"), ModBlocks.getPaviseByMaterialName(material));
+	public static final BiFunction<ModItemTier, Properties, RegistrySupplier<MedievalShieldItem>> PAVISE_SUPPLY = (material, prop) -> INSTANCE.addPaviseItem(material.getMaterialName() + "_pavese", "pavese", prop, material, true, true, SHIELDS_CONFIG.get("pavise"), () -> ModBlocks.getPaviseByMaterialName(material));
 	public static final BiFunction<ModItemTier, Properties, RegistrySupplier<MedievalShieldItem>> KITE_SHIELD_SUPPLY = (material, prop) -> INSTANCE.addMedievalShieldItem(material.getMaterialName() + "_kiteshield", "kiteshield", prop, material, true, true, SHIELDS_CONFIG.get("kiteShield"));
 
 	public static final BiFunction<ModItemTier, Properties, RegistrySupplier<MedievalWeaponItem>> STILETTO_SUPPLY = (material, prop) -> INSTANCE.addMedievalWeaponItem(material.getMaterialName() + "_stylet", prop, material, WEAPONS_CONFIG.getMelee("stiletto"));
@@ -240,16 +244,16 @@ public class ModItems extends ModItemsProvider
 			Component.translatable(EpicKnights.ID + ".darkening_template.upgrade_description"),
 			Component.translatable(EpicKnights.ID + ".darkening_template.base_slot_description"),
 			Component.translatable(EpicKnights.ID + ".darkening_template.additions_slot_description"),
-			List.of(),
-			List.of()));
+			List.<Component>of(),
+			List.<Component>of()));
 	public static final @Nullable RegistrySupplier<Item> GILDING_TEMPLATE = INSTANCE.addIngredientItem("gilding_template", () -> new SmithingTemplateItem(
 			Component.translatable(EpicKnights.ID + ".gilding_template.applies_to"),
 			Component.translatable(EpicKnights.ID + ".gilding_template.ingredients"),
 			Component.translatable(EpicKnights.ID + ".gilding_template.upgrade_description"),
 			Component.translatable(EpicKnights.ID + ".gilding_template.base_slot_description"),
 			Component.translatable(EpicKnights.ID + ".gilding_template.additions_slot_description"),
-			List.of(),
-			List.of()));
+			List.<Component>of(),
+			List.<Component>of()));
 	
 	//Decorations
 	public static final RegistrySupplier<DyeableArmorDecorationItem> TORSE_AND_MANTLE_DECORATION = INSTANCE.addDyeableArmorDecorationItem("torse_and_mantle_decoration", () -> new DyeableArmorDecorationItem(ResourceLocation.fromNamespaceAndPath(EpicKnights.ID, "torse_and_mantle"), new Properties(), net.minecraft.world.item.equipment.ArmorType.HELMET));

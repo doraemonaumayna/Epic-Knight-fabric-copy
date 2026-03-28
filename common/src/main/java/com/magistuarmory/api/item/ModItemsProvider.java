@@ -162,9 +162,10 @@ public abstract class ModItemsProvider
 	{
 		if (type.isDisabled())
 			return null;
-		RegistrySupplier<MedievalShieldItem> shield = ItemRegistryHelper.registerPaviseItem(this.items, id, ResourceLocation.fromNamespaceAndPath(this.modId, name), properties, material, paintable, is3d, type, block);
-		this.shieldItems.add(shield);
-		return shield;
+		PaviseItem item = new PaviseItem(ResourceLocation.fromNamespaceAndPath(this.modId, name), properties, material, paintable, is3d, type, block);
+		net.minecraft.core.registries.BuiltInRegistries.ITEM.register(ResourceLocation.fromNamespaceAndPath(this.modId, id), item);
+		this.shieldItems.add(() -> item);
+		return () -> item;
 	}
 
 	public @Nullable RegistrySupplier<Item> addMedievalBowItem(String id, RangedWeaponType type)
