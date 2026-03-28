@@ -147,9 +147,9 @@ public class PaviseBlock extends AbstractBannerBlock
 	}
 
 	@Override
-	protected void destroy(LevelAccessor accessor, BlockPos blockpos, BlockState blockstate)
+	public void destroy(LevelAccessor accessor, BlockPos blockpos, BlockState blockstate)
 	{
-		if (accessor.getBlockState(blockpos.above()).getBlock() == ModBlocks.PAVISE_UPPER_COLLISION.get())
+		if (accessor.getBlockState(blockpos.above()).getBlock() == ModBlocks.PAVISE_UPPER_COLLISION)
 			accessor.destroyBlock(blockpos.above(), false);
 		super.destroy(accessor, blockpos, blockstate);
 	}

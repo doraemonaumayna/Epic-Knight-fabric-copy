@@ -158,14 +158,16 @@ public abstract class ModItemsProvider
 		return shield;
 	}
 
-	public @Nullable RegistrySupplier<MedievalShieldItem> addPaviseItem(String id, String name, Item.Properties properties, ModItemTier material, boolean paintable, boolean is3d, ShieldType type, Supplier<PaviseBlock> block)
+	public @Nullable PaviseItem addPaviseItem(String id, String name, Item.Properties properties, ModItemTier material, boolean paintable, boolean is3d, ShieldType type, Supplier<PaviseBlock> block)
 	{
 		if (type.isDisabled())
 			return null;
-		PaviseItem item = new PaviseItem(ResourceLocation.fromNamespaceAndPath(this.modId, name), properties, material, paintable, is3d, type, block);
-		net.minecraft.core.registries.BuiltInRegistries.ITEM.register(ResourceLocation.fromNamespaceAndPath(this.modId, id), item);
+		// Use String for first argument, and Fabric registry
+		ResourceLocation loc = ResourceLocation.fromNamespaceAndPath(this.modId, id);
+		PaviseItem item = new PaviseItem(name, loc, properties, material, paintable, is3d, type, block);
+		net.minecraft.core.Registry.register(net.minecraft.core.registries.Registries.ITEM, loc, item);
 		this.shieldItems.add(() -> item);
-		return () -> item;
+		return item;
 	}
 
 	public @Nullable RegistrySupplier<Item> addMedievalBowItem(String id, RangedWeaponType type)

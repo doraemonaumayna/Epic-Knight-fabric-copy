@@ -1,3 +1,5 @@
+import net.minecraft.world.item.Item;
+
 package com.magistuarmory.item;
 
 import dev.architectury.platform.Platform;

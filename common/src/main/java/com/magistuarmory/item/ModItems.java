@@ -297,10 +297,6 @@ public class ModItems extends ModItemsProvider
 		}
 	}
 	
-	public ModItems()
-	{
-		super(EpicKnights.ID);
-	}
 }
 
 

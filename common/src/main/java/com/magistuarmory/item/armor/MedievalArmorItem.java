@@ -60,7 +60,7 @@ public class MedievalArmorItem extends ArmorItem implements ISurcoat
 	@Environment(EnvType.CLIENT)
 	public HumanoidModel getArmorModel(EquipmentSlot slot, HumanoidModel _default)
 	{
-		if (slot == this.getEquipmentSlot() && this.model != null) {
+			   if (slot == this.getType().getSlot() && this.model != null) {
 			return this.model;
 		}
 		return _default;

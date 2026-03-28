@@ -25,7 +25,8 @@ public class HitResultHelper
 			Vec3 attackvec = eyepos.add(view.x * (double) reach, view.y * (double) reach, view.z * (double) reach);
 			AABB expBounds = player.getBoundingBox().expandTowards(view.scale(reach)).inflate(1.0D, 1.0D, 1.0D);
 			EntityHitResult entityhitresult = ProjectileUtil.getEntityHitResult(player, eyepos, attackvec, expBounds, entity -> (!entity.isSpectator() && entity.isPickable()), d1);
-			result = Objects.requireNonNullElseGet(entityhitresult, () -> BlockHitResult.miss(attackvec, Direction.getNearest(view), new BlockPos((int) attackvec.x, (int) attackvec.y, (int) attackvec.z)));
+			// Use correct overload for Direction.getNearest
+			result = Objects.requireNonNullElseGet(entityhitresult, () -> BlockHitResult.miss(attackvec, Direction.getNearest(new Vec3i((int)view.x, (int)view.y, (int)view.z), Direction.NORTH), new BlockPos((int) attackvec.x, (int) attackvec.y, (int) attackvec.z)));
 		}
 		return result;
 	}
