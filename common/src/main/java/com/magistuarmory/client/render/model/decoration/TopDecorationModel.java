@@ -11,7 +11,7 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.LivingEntity;
 
 @Environment(EnvType.CLIENT)
-public class TopDecorationModel<T extends LivingEntity> extends ArmorDecorationModel<T>
+public class TopDecorationModel extends ArmorDecorationModel
 {
 	public TopDecorationModel(ModelPart root)
 	{

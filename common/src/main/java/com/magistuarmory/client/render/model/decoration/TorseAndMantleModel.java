@@ -11,7 +11,7 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.LivingEntity;
 
 @Environment(EnvType.CLIENT)
-public class TorseAndMantleModel<T extends LivingEntity> extends ArmorDecorationModel<T>
+public class TorseAndMantleModel extends ArmorDecorationModel
 {
 	public TorseAndMantleModel(ModelPart root)
 	{

@@ -11,7 +11,7 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.LivingEntity;
 
 @Environment(EnvType.CLIENT)
-public class RondelModel<T extends LivingEntity> extends ArmorDecorationModel<T>
+public class RondelModel extends ArmorDecorationModel
 {
 	public RondelModel(ModelPart root)
 	{

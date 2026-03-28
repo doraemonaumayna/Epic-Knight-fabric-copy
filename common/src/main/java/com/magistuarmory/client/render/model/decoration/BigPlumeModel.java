@@ -8,7 +8,7 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.world.entity.LivingEntity;
 
 @Environment(EnvType.CLIENT)
-public class BigPlumeModel<T extends LivingEntity> extends ArmorDecorationModel<T>
+public class BigPlumeModel extends ArmorDecorationModel
 {
 	public BigPlumeModel(ModelPart root)
 	{

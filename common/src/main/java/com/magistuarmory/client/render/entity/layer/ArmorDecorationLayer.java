@@ -16,6 +16,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -45,16 +46,16 @@ public class ArmorDecorationLayer<T extends LivingEntity> implements ArmorPatter
 {
 
    private static final String ARMOR_DIR_PREFIX = "textures/models/armor/";
-   private final ArmorDecorationModel<T> coatModel;
+   private final ArmorDecorationModel coatModel;
    private final String coatDirPrefix;
    private final ResourceLocation coatTexture;
    private final ResourceLocation basePatternTexture;
-   private final ArmorDecorationModelSet<T> decorationModels;
+   private final ArmorDecorationModelSet decorationModels;
 
    public ArmorDecorationLayer(ArmorDecorationModelSet<T> decorationModels, EntityRendererProvider.Context context, ResourceLocation location)
    {
       this.decorationModels = decorationModels;
-      this.coatModel = new SurcoatModel<>(context.bakeLayer(new ModelLayerLocation(location, "decoration")));
+      this.coatModel = new SurcoatModel(context.bakeLayer(new ModelLayerLocation(location, "decoration")));
       this.coatDirPrefix = this.getDirPrefix(location);
       this.coatTexture = this.getTexture(location);
       this.basePatternTexture = ResourceLocation.fromNamespaceAndPath(EpicKnights.ID, coatDirPrefix + "base.png");
@@ -119,7 +120,7 @@ public class ArmorDecorationLayer<T extends LivingEntity> implements ArmorPatter
       }
    }
 
-   public ArmorDecorationModel<T> getCoatModel() {
+   public ArmorDecorationModel getCoatModel() {
       return this.coatModel;
    }
 

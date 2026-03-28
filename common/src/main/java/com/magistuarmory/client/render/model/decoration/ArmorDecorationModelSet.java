@@ -24,7 +24,7 @@ public class ArmorDecorationModelSet<T extends LivingEntity>
         for (Supplier<? extends ArmorDecoration> supplier : decorations)
         {
             ModelLayerLocation location = supplier.get().createModelLocation();
-            this.map.putIfAbsent(location, new ArmorDecorationModel<>(context.bakeLayer(location)));
+            this.map.putIfAbsent(location, new ArmorDecorationModel(context.bakeLayer(location)));
         }
     }
 

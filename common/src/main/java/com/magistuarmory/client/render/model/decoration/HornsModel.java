@@ -14,7 +14,7 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.world.entity.LivingEntity;
 
 @Environment(EnvType.CLIENT)
-public class HornsModel<T extends LivingEntity> extends ArmorDecorationModel<T>
+public class HornsModel extends ArmorDecorationModel
 {
 	public HornsModel(ModelPart root)
 	{
